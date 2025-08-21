@@ -15,7 +15,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 </head>
 <body>
     <div class="login-container">
-        <form action="login_handler.php" method="POST" class="login-form">
+        <form action="login_handle.php" method="POST" class="login-form">
             <h2>Login</h2>
             
             <?php
