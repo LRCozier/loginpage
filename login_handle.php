@@ -1,43 +1,53 @@
 <?php
-
+// Start the session to manage user state.
 session_start();
 
+// Ensure the script is accessed via a POST request.
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    // Redirect to login page or show an error
     header('Location: login.php');
     exit('Invalid request method.');
 }
 
-$users = [
-    // username => hashed_password
-    'admin' => '$2y$10$w5J1yB/J3Kz.N9gZ4nF6Gu3nGuOKj2J3kX/YgZ.wN8dJ4oO5eF3B.', // Password is "password123"
-    'user'  => '$2y$10$8.PClvV/3e9p3j8aB3x6I.1e4F2z.C6o/E2yZ7u8uB3kX5c.Z4zC.'  // Password is "securepass"
-];
+$username = trim($_POST['username'] ?? '');
+$password = trim($_POST['password'] ?? '');
 
-$username = isset($_POST['username']) ? trim($_POST['username']) : '';
-$password = isset($_POST['password']) ? trim($_POST['password']) : '';
-
+// Basic validation to ensure fields are not empty.
 if (empty($username) || empty($password)) {
-    // Redirect back with an error if fields are empty
     header('Location: login.php?error=1');
     exit;
 }
 
-if (isset($users[$username]) && password_verify($password, $users[$username])) {
-    // Login Successful
+$userFile = 'users.json';
+$users = file_exists($userFile) ? json_decode(file_get_contents($userFile), true) : [];
 
+$foundUser = null;
+
+// Loop through the users array to find a matching username.
+foreach ($users as $user) {
+    if ($user['username'] === $username) {
+        $foundUser = $user;
+        break; // Stop the loop once the user is found.
+    }
+}
+
+// Check if a user was found & Verify the submitted password against the stored hash.
+if ($foundUser && password_verify($password, $foundUser['password_hash'])) {
+    
+    // Regenerate session ID for security
     session_regenerate_id(true);
+    
+    // Set session variables to mark the user as logged in.
     $_SESSION['loggedin'] = true;
-    $_SESSION['username'] = $username; // Store username for personalization
-
-    // Redirect to a protected "success" page
+    $_SESSION['username'] = $foundUser['username'];
+    
+    // Redirect to the success page.
     header('Location: success.php');
     exit;
-
+    
 } else {
-    // Login Failed - Redirect back to the login page with an error flag in the URL.
+    
+    // Redirect back to the login page with a generic error message.
     header('Location: login.php?error=1');
     exit;
 }
-
 ?>

@@ -60,6 +60,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
             <div class="form-footer">
                 <a href="#" class="forgot-password">Forgot Password?</a>
+                <span>&middot;</span>
+                <a href="register.php" class="forgot-password">Don't have an account? Sign Up</a>
             </div>
         </form>
     </div>
