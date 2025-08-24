@@ -1,13 +1,48 @@
+:root {
+  --color-bg: #f0f2f5;
+  --color-surface: #ffffff;
+  --color-text-primary: #1c1e21;
+  --color-text-secondary: #606770;
+  --color-border: #dddfe2;
+  --color-primary: #1877f2;
+  --color-primary-hover: #166fe5;
+  --color-success-bg: #d4edda;
+  --color-success-text: #155724;
+  --color-success-border: #c3e6cb;
+  --color-error-bg: #f8d7da;
+  --color-error-text: #721c24;
+  --color-error-border: #f5c6cb;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme='dark'] {
+  --color-bg: #121212;
+  --color-surface: #1e1e1e;
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #a0a0a0;
+  --color-border: #444444;
+  --color-primary: #1877f2;
+  --color-primary-hover: #3a8dff;
+  --color-success-bg: #1a3c2a;
+  --color-success-text: #6ee69a;
+  --color-success-border: #2a6a44;
+  --color-error-bg: #4d181f;
+  --color-error-text: #ff8a9a;
+  --color-error-border: #8d2a3a;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
-  background-color: #f0f2f5;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
 }
-
 
 .login-container {
   width: 100%;
@@ -15,21 +50,20 @@ body {
   padding: 20px;
 }
 
-
 .login-form {
-  background-color: #ffffff;
+  background-color: var(--color-surface);
   padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--shadow-color);
   width: 100%;
+  transition: background-color 0.3s;
 }
 
 .login-form h2 {
   text-align: center;
   margin-bottom: 24px;
-  color: #1c1e21;
+  color: var(--color-text-primary);
 }
-
 
 .input-group {
   margin-bottom: 16px;
@@ -39,21 +73,23 @@ body {
   display: block;
   margin-bottom: 6px;
   font-weight: 500;
-  color: #606770;
+  color: var(--color-text-secondary);
 }
 
 .input-group input {
   width: 100%;
   padding: 12px;
-  border: 1px solid #dddfe2;
   border-radius: 6px;
   font-size: 16px;
   box-sizing: border-box;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: #1877f2;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 2px #e7f3ff;
 }
 
@@ -71,7 +107,7 @@ body {
 .btn-login {
   width: 100%;
   padding: 12px;
-  background-color: #1877f2;
+  background-color: var(--color-primary);
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -82,7 +118,7 @@ body {
 }
 
 .btn-login:hover {
-  background-color: #166fe5;
+  background-color: var(--color-primary-hover);
 }
 
 .form-footer {
@@ -91,7 +127,7 @@ body {
 }
 
 .forgot-password {
-  color: #1877f2;
+  color: var(--color-primary);
   text-decoration: none;
   font-size: 14px;
 }
@@ -100,20 +136,24 @@ body {
   text-decoration: underline;
 }
 
-.error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+.success-message {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+  border: 1px solid var(--color-success-border);
   padding: 10px;
   border-radius: 6px;
   text-align: center;
   margin-bottom: 16px;
 }
 
-@media (max-width: 480px) {
-  .login-form {
-      padding: 20px;
-  }
+.error-message {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 16px;
 }
 
 .divider {
@@ -129,7 +169,7 @@ body {
 .divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid #d4d8de;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .divider::before {
@@ -157,7 +197,7 @@ body {
   font-weight: 500;
   text-decoration: none;
   transition: background-color 0.2s, box-shadow 0.2s;
-  border: 1px solid #dadce0;
+  border: 1px solid var(--color-border);
 }
 
 .btn-social:hover {
@@ -194,12 +234,33 @@ body {
   background-color: #166fe5;
 }
 
-.success-message {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-  padding: 10px;
-  border-radius: 6px;
-  text-align: center;
-  margin-bottom: 16px;
+.theme-toggle-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.theme-toggle-btn {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.theme-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--color-text-primary);
+}
+
+@media (max-width: 480px) {
+  .login-form {
+      padding: 20px;
+  }
 }
