@@ -2,57 +2,18 @@
 
 A secure, modern, and fully responsive user authentication system built with vanilla PHP, JavaScript, CSS, and HTML. This project serves as a portfolio piece to demonstrate fundamental full-stack web development skills, focusing on security, user experience, and maintainable code.
 
-**[► Live Demo (Link to your deployed project) ◄]()**
+**[► Live Demo ◄]()**
 
 ---
 
 ### Key Features
 
-* **Secure User Registration & Login:** Server-side validation and password hashing.
-* **Responsive Design:** A seamless, mobile-first experience on any device.
-* **Dark/Light Mode Theme:** A persistent theme toggle that respects user preference via `localStorage`.
-* **Secure Session Management:** Protects user sessions and restricted content.
-* **Password Visibility Toggle:** Enhances user experience when typing complex passwords.
-* **Clear User Feedback:** Dynamic and specific error and success messages.
-* **Modern Social Login UI:** Includes front-end elements for social authentication providers.
-* **Demo-Ready Data Store:** Uses a simple JSON file to simulate a database for immediate, hassle-free demonstration.
-
-### Technology Stack
-
-* **Backend:** PHP 8.4.11
-* **Frontend:**
-    * HTML5
-    * CSS3
-    * Vanilla JavaScript
-* **Development Environment:** Works with any standard PHP server (e.g., PHP's built-in server, XAMPP, MAMP).
-
----
-
-### Project Structure
-
-The project is organized logically to separate concerns between front-end display, back-end processing, and styling.
-
-Certainly. Here is the complete Markdown for your README.md file, ready to be copied and pasted directly into your file.
-
-Markdown
-
-# Responsive Login & Registration System
-
-A secure, modern, and fully responsive user authentication system built with vanilla PHP, JavaScript, CSS, and HTML. This project serves as a portfolio piece to demonstrate fundamental full-stack web development skills, focusing on security, user experience, and maintainable code.
-
-**[► Live Demo (Link to your deployed project) ◄](https://your-deployment-url.com)**
-
----
-
-### Key Features
-
-* **Secure User Registration & Login:** Server-side validation and password hashing.
-* **Responsive Design:** A seamless, mobile-first experience on any device.
-* **Dark/Light Mode Theme:** A persistent theme toggle that respects user preference via `localStorage`.
-* **Secure Session Management:** Protects user sessions and restricted content.
-* **Password Visibility Toggle:** Enhances user experience when typing complex passwords.
-* **Clear User Feedback:** Dynamic and specific error and success messages.
-* **Modern Social Login UI:** Includes front-end elements for social authentication providers.
+* **Secure User Authentication:** Full registration, login, and logout functionality with robust server-side validation.
+* **Sleek Dark/Light Mode Toggle:** A modern, animated UI toggle that respects user preference across sessions using `localStorage`.
+* **Polished User Experience (UX):** Includes features like a password visibility toggle and clear, dynamic feedback messages for a smooth user journey.
+* **Fully Responsive Design:** A mobile-first approach ensures a seamless and accessible interface on all devices, from phones to desktops.
+* **Secure Session Management:** Protects user sessions, restricts access to protected pages, and ensures secure session destruction upon logout.
+* **Modern Social Login UI:** Includes front-end components ready for future integration with social authentication providers.
 * **Demo-Ready Data Store:** Uses a simple JSON file to simulate a database for immediate, hassle-free demonstration.
 
 ### Technology Stack
@@ -60,10 +21,15 @@ A secure, modern, and fully responsive user authentication system built with van
 * **Backend:** PHP 8.x
 * **Frontend:**
     * HTML5
-    * CSS3 (Flexbox, CSS Custom Properties/Variables)
+    * CSS3 (Flexbox, CSS Custom Properties/Variables, Transitions)
     * Vanilla JavaScript (ES6)
 * **Development Environment:** Works with any standard PHP server (e.g., PHP's built-in server, XAMPP, MAMP).
 
+---
+
+### Project Structure
+
+The project is organized logically to separate concerns between front-end display, back-end processing, and styling.
 ---
 
 ### Project Structure
@@ -74,6 +40,7 @@ The project is organized logically to separate concerns between front-end displa
 ├── login.php             # Main login page
 ├── register.php          # User registration page
 ├── success.php           # Protected page for logged-in users
+├── logout.php            # Securely handles user logout
 |
 ├── login_handle.php     # Processes login credentials
 ├── register_handle.php  # Validates and saves new user data
@@ -102,14 +69,14 @@ For this portfolio project, a deliberate choice was made to use a `users.json` f
 Security was a top priority throughout the development of this system.
 
 * **Password Hashing:** User passwords are **never** stored in plain text. The `password_hash()` and `password_verify()` functions are used, implementing PHP's recommended standard for secure password storage.
-* **Server-Side Validation:** All user input is rigorously validated on the server to prevent invalid data and common vulnerabilities. This includes checks for empty fields, email format, username constraints, and password strength.
-* **Session Security:** Upon a successful login, `session_regenerate_id(true)` is called to prevent session fixation attacks. Protected pages like `success.php` verify the existence of a valid session, redirecting unauthorized users.
+* **Server-Side Validation:** All user input is rigorously validated on the server to prevent invalid data and common vulnerabilities.
+* **Session Security:** Upon a successful login, `session_regenerate_id(true)` is called to prevent session fixation attacks. The dedicated `logout.php` script ensures that sessions are properly unset and destroyed.
 
 #### Front-End & User Experience
 
 The front-end is built to be modern, intuitive, and responsive.
 
-* **Dark Mode:** The theme-switching functionality is implemented using CSS Custom Properties (Variables), which is the modern standard. This allows for an instant theme change without reloading the page or causing a "flash of unstyled content" (FOUC). User preference is saved in `localStorage` for a persistent experience across sessions.
+* **Theme Switcher:** The UI features a polished, animated theme-switcher built with clean HTML, CSS transitions, and modern JavaScript. The theme preference is persisted in `localStorage` to prevent a "flash of unstyled content" (FOUC) and provide a consistent user experience.
 * **Dynamic Feedback:** The forms provide clear, specific feedback for both errors (e.g., "Passwords do not match") and successes ("Registration successful!"), guiding the user through the authentication process.
 
 ---
@@ -120,12 +87,12 @@ To run this project on your local machine, you will need PHP installed.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/LRCozier/loginpage.git](https://github.com/LRCozier/loginpage.git)
+    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
     ```
 
 2.  **Navigate to the project directory:**
     ```bash
-    cd loginpage
+    cd your-repo-name
     ```
 
 3.  **Start the built-in PHP development server:**
