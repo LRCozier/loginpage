@@ -234,6 +234,25 @@ body {
   background-color: #166fe5;
 }
 
+.btn-logout-link {
+  display: block;
+  width: 100px;
+  margin: 20px auto 0;
+  padding: 10px;
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+  border-radius: 6px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.btn-logout-link:hover {
+  opacity: 0.8;
+}
+
 .theme-toggle-container {
   position: absolute;
   top: 20px;

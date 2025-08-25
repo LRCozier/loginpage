@@ -35,7 +35,7 @@ $username = htmlspecialchars($_SESSION['username']);
             <h2>Login Successful!</h2>
             <p style="text-align: center;">Welcome back, <strong><?php echo $username; ?></strong>!</p>
             <p style="text-align: center; margin-top: 20px;">
-                <a href="login.php" class="forgot-password">Logout (simulation)</a>
+                <a href="login.php" class="btn-logout-link">Logout</a>
             </p>
         </div>
     </div>
