@@ -13,6 +13,10 @@
   --color-error-text: #721c24;
   --color-error-border: #f5c6cb;
   --shadow-color: rgba(0, 0, 0, 0.1);
+  --toggle-bg: #2d3748;
+  --toggle-thumb-bg: #ffffff;
+  --icon-sun-color: #f6e05e;
+  --icon-moon-color: #f6e05e;
 }
 
 html[data-theme='dark'] {
@@ -30,6 +34,8 @@ html[data-theme='dark'] {
   --color-error-text: #ff8a9a;
   --color-error-border: #8d2a3a;
   --shadow-color: rgba(0, 0, 0, 0.5);
+  --toggle-bg: #4a5568;
+  --toggle-thumb-bg: #1e1e1e;
 }
 
 body {
@@ -253,54 +259,58 @@ body {
   opacity: 0.8;
 }
 
-.theme-toggle-container {
+.theme-toggle-wrapper {
   position: absolute;
   top: 20px;
   right: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
-.theme-toggle-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-}
-
-.theme-toggle-btn {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  position: relative;
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  transition: background-color 0.3s, border-color 0.3s;
+  padding: 0 6px;
+  box-sizing: border-box;
+  background-color: var(--toggle-bg);
 }
 
-.theme-toggle-btn svg {
-  width: 20px;
-  height: 20px;
-  fill: var(--color-text-primary);
+.theme-toggle__icon {
+  width: 18px;
+  height: 18px;
+  z-index: 1;
 }
 
-#sun-icon {
-  display: none;
+.theme-toggle__icon .sun-icon {
+  fill: var(--icon-sun-color);
 }
 
-#moon-icon {
-  display: block;
+.theme-toggle__icon .moon-icon {
+  fill: var(--icon-moon-color);
 }
 
-html[data-theme='dark'] #sun-icon {
-  display: block;
+.theme-toggle__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--toggle-thumb-bg);
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 0;
 }
 
-html[data-theme='dark'] #moon-icon {
-  display: none;
+html[data-theme='dark'] .theme-toggle__thumb {
+  transform: translateX(30px);
 }
 
 @media (max-width: 480px) {

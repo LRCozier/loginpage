@@ -1,14 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const themeToggleButton = document.getElementById('theme-toggle-btn');
-  const themeLabel = document.getElementById('theme-toggle-label');
 
   const applyTheme = (theme) => {
       if (theme === 'dark') {
           document.documentElement.setAttribute('data-theme', 'dark');
-          themeLabel.textContent = 'Switch to Light Mode';
+          themeToggleButton.setAttribute('aria-checked', 'true');
       } else {
           document.documentElement.removeAttribute('data-theme');
-          themeLabel.textContent = 'Switch to Dark Mode';
+          themeToggleButton.setAttribute('aria-checked', 'false');
       }
   };
 
