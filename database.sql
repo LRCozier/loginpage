@@ -1,6 +1,6 @@
 -- Create database
-CREATE DATABASE IF NOT EXISTS user_auth_system;
-USE user_auth_system;
+CREATE DATABASE IF NOT EXISTS login_page;
+USE login_page;
 
 -- Users table
 CREATE TABLE users (
