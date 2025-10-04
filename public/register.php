@@ -1,5 +1,9 @@
 <?php 
 session_start();
+error_log("PAGE: " . basename($_SERVER['PHP_SELF']) . " loaded");
+error_log("SESSION: CSRF token - " . ($_SESSION['csrf_token'] ?? 'NOT SET'));
+
+
 
 // Generate CSRF token
 if (empty($_SESSION['csrf_token'])) {

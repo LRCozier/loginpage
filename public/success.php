@@ -2,11 +2,16 @@
 session_start();
 require_once __DIR__ . '/../config/database.php';
 
+error_log("SUCCESS PAGE: Session check - loggedin: " . ($_SESSION['loggedin'] ?? 'NOT SET'));
+
 // Redirect if not logged in
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    error_log("SUCCESS PAGE ERROR: User not logged in, redirecting to login");
     header('Location: login.php');
     exit;
 }
+
+error_log("SUCCESS PAGE: User logged in - ID: " . ($_SESSION['user_id'] ?? 'UNKNOWN') . ", Username: " . ($_SESSION['username'] ?? 'UNKNOWN'));
 
 try {
     $database = new Database();
@@ -19,6 +24,7 @@ try {
     $user = $stmt->fetch();
     
     if (!$user) {
+        error_log("SUCCESS PAGE ERROR: User not found in database for ID: " . $_SESSION['user_id']);
         session_destroy();
         header('Location: login.php');
         exit;
@@ -29,12 +35,16 @@ try {
     $member_since = date('F j, Y', strtotime($user['created_at']));
     $last_login = $user['last_login'] ? date('F j, Y g:i A', strtotime($user['last_login'])) : 'First login!';
     
+    error_log("SUCCESS PAGE: Displaying welcome for user: $username");
+    
 } catch (Exception $e) {
-    error_log("Success page error: " . $e->getMessage());
+    error_log("SUCCESS PAGE ERROR: " . $e->getMessage());
+    // Continue with session data if DB fails
     $username = htmlspecialchars($_SESSION['username']);
     $email = 'Not available';
     $member_since = 'Unknown';
     $last_login = 'Unknown';
+    error_log("SUCCESS PAGE: Using session data due to DB error");
 }
 ?>
 <!DOCTYPE html>
