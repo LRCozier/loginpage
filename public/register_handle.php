@@ -68,14 +68,13 @@ if (!preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !p
 try {
     error_log("REGISTRATION: Attempting database connection...");
     $database = new Database();
-    $db = $database->getConnection();
+    $db = $database->getConnection(); // Keep for lastInsertId
     error_log("REGISTRATION: Database connection successful");
 
     // Check if username or email exists
     $query = "SELECT id FROM users WHERE username = :username OR email = :email";
     error_log("REGISTRATION: Executing duplicate check query");
-    $stmt = $db->prepare($query);
-    $stmt->execute(['username' => $username, 'email' => $email]);
+    $stmt = $database->executeQuery($query, ['username' => $username, 'email' => $email]);
 
     if ($stmt->rowCount() > 0) {
         error_log("REGISTRATION ERROR: Username or email already exists");
@@ -95,19 +94,13 @@ try {
     // Insert user
     $query = "INSERT INTO users (username, email, password_hash) VALUES (:username, :email, :password_hash)";
     error_log("REGISTRATION: Executing user insert query");
-    $stmt = $db->prepare($query);
-    $result = $stmt->execute([
+    $database->executeQuery($query, [
         'username' => $username,
         'email' => $email,
         'password_hash' => $password_hash
     ]);
 
-    if (!$result) {
-        $errorInfo = $stmt->errorInfo();
-        throw new Exception("Database insert failed: " . $errorInfo[2]);
-    }
-
-    $user_id = $db->lastInsertId();
+    $user_id = $database->conn->lastInsertId();
     error_log("REGISTRATION SUCCESS: User inserted with ID: $user_id");
     
     // Log registration
@@ -124,16 +117,6 @@ try {
     error_log("REGISTRATION ERROR: " . $e->getMessage());
     error_log("REGISTRATION ERROR: File: " . $e->getFile() . " Line: " . $e->getLine());
     error_log("REGISTRATION ERROR: Trace: " . $e->getTraceAsString());
-    
-    // Log database error info if available
-    if (isset($stmt)) {
-        $errorInfo = $stmt->errorInfo();
-        error_log("REGISTRATION PDO Error Info: " . print_r($errorInfo, true));
-    }
-    
-    if (isset($db)) {
-        error_log("REGISTRATION DB Error Code: " . $db->errorCode());
-    }
     
     header('Location: /register.php?error=system');
     exit();

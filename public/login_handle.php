@@ -35,7 +35,7 @@ if (empty($username) || empty($password)) {
 try {
     error_log("LOGIN: Attempting database connection...");
     $database = new Database();
-    $db = $database->getConnection();
+    $db = $database->getConnection(); // Keep this for now, we'll remove it later
     error_log("LOGIN: Database connection successful");
     
     // Check for brute force protection
@@ -47,8 +47,7 @@ try {
               WHERE ip_address = :ip_address 
                 AND attempted_at > DATE_SUB(NOW(), INTERVAL 15 MINUTE)
                 AND success = false";
-    $stmt = $db->prepare($query);
-    $stmt->execute(['ip_address' => $ip_address]);
+    $stmt = $database->executeQuery($query, ['ip_address' => $ip_address]);
     $result = $stmt->fetch();
     
     error_log("LOGIN: Failed attempts in last 15min: " . $result['attempts']);
@@ -59,15 +58,15 @@ try {
         exit;
     }
     
-    // Find user
+    // Find user - USING NEW METHOD CORRECTLY
     $query = "SELECT id, username, password_hash, is_active, failed_login_attempts, account_locked_until 
               FROM users 
               WHERE username = :username OR email = :username";
     error_log("LOGIN: Searching for user: '$username'");
     
-    $stmt = $db->prepare($query);
-    $stmt->execute(['username' => $username]);
-    $user = $stmt->fetch();
+    $stmt = $database->executeQuery($query, ['username' => $username]);
+    $user = $stmt->fetch(); // ← THIS WAS MISSING!
+    error_log("LOGIN: Query executed, user found: " . ($user ? 'YES' : 'NO'));
     
     $login_success = false;
     
@@ -88,12 +87,11 @@ try {
             $login_success = true;
             error_log("LOGIN: Password verification SUCCESS");
             
-            // Reset failed attempts on successful login
+            // Reset failed attempts on successful login - USING NEW METHOD
             $query = "UPDATE users 
                       SET failed_login_attempts = 0, account_locked_until = NULL, last_login = NOW() 
                       WHERE id = :user_id";
-            $stmt = $db->prepare($query);
-            $stmt->execute(['user_id' => $user['id']]);
+            $database->executeQuery($query, ['user_id' => $user['id']]);
             
             // Regenerate session ID for security
             session_regenerate_id(true);
@@ -134,11 +132,11 @@ try {
             error_log("LOGIN: Account locked until: $lock_until");
         }
         
+        // Update user - USING NEW METHOD
         $query = "UPDATE users 
                   SET failed_login_attempts = :attempts, account_locked_until = :lock_until 
                   WHERE id = :user_id";
-        $stmt = $db->prepare($query);
-        $stmt->execute([
+        $database->executeQuery($query, [
             'attempts' => $new_attempts,
             'lock_until' => $lock_until,
             'user_id' => $user['id']
@@ -149,11 +147,10 @@ try {
         $database->logAudit(null, 'login_failed', 'Unknown user: ' . $username);
     }
     
-    // Log login attempt
+    // Log login attempt - USING NEW METHOD
     $query = "INSERT INTO login_attempts (ip_address, username, success, user_agent) 
               VALUES (:ip_address, :username, :success, :user_agent)";
-    $stmt = $db->prepare($query);
-    $stmt->execute([
+    $database->executeQuery($query, [
         'ip_address' => $ip_address,
         'username' => $username,
         'success' => $login_success,
