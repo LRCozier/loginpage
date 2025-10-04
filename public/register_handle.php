@@ -58,7 +58,7 @@ if (strlen($password) < 8) {
     exit();
 }
 
-// Enhanced password strength check
+// password strength check
 if (!preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password)) {
     error_log("REGISTRATION ERROR: Weak password");
     header('Location: /register.php?error=passwordweak');
@@ -68,7 +68,6 @@ if (!preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !p
 try {
     error_log("REGISTRATION: Attempting database connection...");
     $database = new Database();
-    $db = $database->getConnection(); // Keep for lastInsertId
     error_log("REGISTRATION: Database connection successful");
 
     // Check if username or email exists
@@ -100,7 +99,7 @@ try {
         'password_hash' => $password_hash
     ]);
 
-    $user_id = $database->conn->lastInsertId();
+    $user_id = $database->lastInsertId();
     error_log("REGISTRATION SUCCESS: User inserted with ID: $user_id");
     
     // Log registration

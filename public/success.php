@@ -15,12 +15,10 @@ error_log("SUCCESS PAGE: User logged in - ID: " . ($_SESSION['user_id'] ?? 'UNKN
 
 try {
     $database = new Database();
-    $db = $database->getConnection();
     
     // Get user details
     $query = "SELECT username, email, created_at, last_login FROM users WHERE id = :user_id";
-    $stmt = $db->prepare($query);
-    $stmt->execute(['user_id' => $_SESSION['user_id']]);
+    $stmt = $database->executeQuery($query, ['user_id' => $_SESSION['user_id']]);
     $user = $stmt->fetch();
     
     if (!$user) {

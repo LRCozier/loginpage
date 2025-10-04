@@ -35,7 +35,7 @@ if (empty($username) || empty($password)) {
 try {
     error_log("LOGIN: Attempting database connection...");
     $database = new Database();
-    $db = $database->getConnection(); // Keep this for now, we'll remove it later
+    // REMOVED: Unnecessary variable: $db = $database->getConnection();
     error_log("LOGIN: Database connection successful");
     
     // Check for brute force protection
@@ -58,14 +58,14 @@ try {
         exit;
     }
     
-    // Find user - USING NEW METHOD CORRECTLY
+    // Find user
     $query = "SELECT id, username, password_hash, is_active, failed_login_attempts, account_locked_until 
               FROM users 
               WHERE username = :username OR email = :username";
     error_log("LOGIN: Searching for user: '$username'");
     
     $stmt = $database->executeQuery($query, ['username' => $username]);
-    $user = $stmt->fetch(); // ← THIS WAS MISSING!
+    $user = $stmt->fetch();
     error_log("LOGIN: Query executed, user found: " . ($user ? 'YES' : 'NO'));
     
     $login_success = false;
@@ -87,7 +87,7 @@ try {
             $login_success = true;
             error_log("LOGIN: Password verification SUCCESS");
             
-            // Reset failed attempts on successful login - USING NEW METHOD
+            // Reset failed attempts on successful login
             $query = "UPDATE users 
                       SET failed_login_attempts = 0, account_locked_until = NULL, last_login = NOW() 
                       WHERE id = :user_id";
@@ -132,7 +132,7 @@ try {
             error_log("LOGIN: Account locked until: $lock_until");
         }
         
-        // Update user - USING NEW METHOD
+        // Update user
         $query = "UPDATE users 
                   SET failed_login_attempts = :attempts, account_locked_until = :lock_until 
                   WHERE id = :user_id";
@@ -147,7 +147,7 @@ try {
         $database->logAudit(null, 'login_failed', 'Unknown user: ' . $username);
     }
     
-    // Log login attempt - USING NEW METHOD
+    // Log login attempt
     $query = "INSERT INTO login_attempts (ip_address, username, success, user_agent) 
               VALUES (:ip_address, :username, :success, :user_agent)";
     $database->executeQuery($query, [

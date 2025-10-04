@@ -13,6 +13,9 @@ class Database {
         $this->password = $this->getEnvVariable('DB_PASSWORD', '');
         
         error_log("DB CONFIG - Host: " . $this->host . ", DB: " . $this->db_name . ", User: " . $this->username);
+        
+        // Establish connection upon instantiation
+        $this->getConnection();
     }
     
     private function getEnvVariable($key, $default = '') {
@@ -24,7 +27,9 @@ class Database {
     }
     
     public function getConnection() {
-        $this->conn = null;
+        if ($this->conn) {
+            return $this->conn;
+        }
         
         try {
             error_log("DATABASE: Attempting connection to " . $this->host);
@@ -52,7 +57,6 @@ class Database {
         return $this->conn;
     }
     
-    // Enhanced executeQuery with detailed logging
     public function executeQuery($query, $params = []) {
         try {
             error_log("SQL QUERY: " . $query);
@@ -98,6 +102,10 @@ class Database {
             error_log("AUDIT LOG ERROR: " . $e->getMessage());
             return false;
         }
+    }
+
+    public function lastInsertId() {
+        return $this->conn->lastInsertId();
     }
 }
 ?>
