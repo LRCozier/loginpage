@@ -34,7 +34,7 @@ if (empty($_SESSION['csrf_token'])) {
     </div>
     
     <div class="login-container">
-        <form action="/handlers/register_handle.php" method="POST" class="login-form" id="registerForm">
+        <form action="register_handle.php" method="POST" class="login-form" id="registerForm">
             <h2>Create Your Account</h2>
 
             <?php
