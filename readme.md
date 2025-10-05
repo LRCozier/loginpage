@@ -2,7 +2,7 @@
 
 **Version:** 1.0.0
 **Last Updated:** 4th October 2025
-**Author:** [Your Name/Handle]
+**Author:** Luke Rudderham-Cozier
 
 ---
 
