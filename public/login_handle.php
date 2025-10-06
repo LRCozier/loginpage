@@ -35,7 +35,6 @@ if (empty($username) || empty($password)) {
 try {
     error_log("LOGIN: Attempting database connection...");
     $database = new Database();
-    // REMOVED: Unnecessary variable: $db = $database->getConnection();
     error_log("LOGIN: Database connection successful");
     
     // Check for brute force protection
